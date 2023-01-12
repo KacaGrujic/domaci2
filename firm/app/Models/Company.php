@@ -16,9 +16,9 @@ class Company extends Model
         'address',
         'company'
     ];
-    public function companies()
+    public function reports()
     {
-        return $this->hasMany(Company::class);
+        return $this->hasMany(Report::class);
     }
 
 }

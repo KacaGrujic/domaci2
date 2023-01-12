@@ -9,7 +9,7 @@ class ReportType extends Model
 {
     use HasFactory;
     
-    protected $table='reporttypes';
+    protected $table='report_types';
     protected $primaryKey='reporttypeid';
 
     
