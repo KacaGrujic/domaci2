@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ReportTypeResource;
-
 use App\Models\ReportType;
 use Illuminate\Http\Request;
+
 
 class ReportTypeController extends Controller
 {
@@ -16,8 +15,8 @@ class ReportTypeController extends Controller
      */
     public function index()
     {
-        //
-
+        $reporttype = ReportType::all();
+        return $reporttype;
     }
 
     /**
@@ -47,11 +46,8 @@ class ReportTypeController extends Controller
      * @param  \App\Models\ReportType  $reportType
      * @return \Illuminate\Http\Response
      */
-    public function show(ReportType $reportType)
-    {
-        //
-        return new ReportTypeResource($reportType);
-
+    public function show(ReportType $reporttype){
+        return new ReportTypeResource($reporttype);
     }
 
     /**
@@ -76,7 +72,13 @@ class ReportTypeController extends Controller
     {
         //
     }
+    public function getById($reporttypeid)
+    {
+        $reporttype = ReportType::findOrFail($reporttypeid);
 
+        return new ReportTypeResource($reporttype);
+
+    }
     /**
      * Remove the specified resource from storage.
      *

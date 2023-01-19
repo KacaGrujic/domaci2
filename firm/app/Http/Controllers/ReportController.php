@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ReportCollection;
 use App\Http\Resources\ReportResource;
-use App\Models\Company;
-use App\Models\ReportType;
+use App\Http\Resources\ReportCollection;
 use App\Models\Report;
-
+use App\Models\ReportType;
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
@@ -19,96 +20,63 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
         $report = Report::all();
         return new ReportCollection($report);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-        $validator = Validator::make($request->all(), [
-
-            'reportname' => 'required',
-            'analysys' => 'required',
-            'companyid' => 'required',
-            'reporttypeid' => 'required'
+        $validator = Validator::make($request->all(),[
+            'reportname'=>'required',
+            'analysys'=>'required',
+            'companyid'=>'required',
+            'reporttypeid'=>'required'
         ]);
 
-        if ($validator->fails())
+        if($validator->fails())
+        {
             return response()->json($validator->errors());
+        }
 
-        $report = Report::create([
-            'reportname' => $request->reportname,
-            'analysys' => $request->analysys,
-            'companyid' => $request->companyid,
-           // 'user_id' => Auth::user()->id,
-            'reporttypeid' => $request->reporttypeid
+        $requestReport = $request->only('reportname', 'analysys', 'companyid', 'reporttypeid');
+        $report = Report::create($requestReport);
 
-        ]);
+      //  $newReport = Report::find($newReport->id);
+      //  return response()->json(new ReportResource($newReport), 200);
+
+        // $requestReport = $request->only('reportname', 'analysys', 'companyid', 'reporttypeid');
+        return response()->json(['Izvestaj je kreiran!', new ReportResource($report)]);
 
 
-        return response()->json('Dodali ste izvestaj.');
+        // $report = Report::create($requestReport);
+
+         
     }
 
-
-
-    public function updateById(Request $request, int $reportid)
+    public function getById($id)
     {
-        
-        $report = Report::find($reportid);
-        $report->reportname = $request->reportname;
-        $report->address = $request->address;
-        $report->companyid = $request->companyid;
-        $report->reporttypeid = $request->reporttypeid;
+        $report = Report::findOrFail($id);
 
-        $report->save();
+        return new ReportResource($report);
 
-        return response()->json(['Izvestaj je azuriran!', new ReportResource($report)]);
     }
 
+    public function show(Report $report){
+        return new ReportResource($report);
+    }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Report $report)
+    public function delete($id)
     {
-        //
+        $report = Report::destroy($id);
+
+        return response()->json('Izvestaj je uspesno obrisan');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(int $reportid)
+
+    public function edit(Report $report)
     {
         //
-        $report = Report::findOrFail($reportid);
-        $report->delete();
-
-        return response()->json(['Obrisali ste izvestaj']);
     }
 
     /**
@@ -118,9 +86,18 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Report $report)
+    public function updateById(Request $request, int $id)
     {
         //
+        $report = Report::find($id);
+        $report->reportname = $request->reportname;
+        $report->analysys = $request->analysys;
+        $report->companyid = $request->companyid;
+        $report->reporttypeid = $request->reporttypeid;
+
+        $report->save();
+
+        return response()->json(['Izvestaj je azuriran', new ReportResource($report)]);
     }
 
     /**
@@ -129,8 +106,62 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Report $report)
+    public function destroy(int $id)
     {
         //
+        $report = Report::findOrFail($id);
+        $report->delete();
+
+        return response()->json(['Obrisali ste izvestaj']);
     }
+
+    public function reportbytype(int $id)
+    {
+
+        $report = Report::get()->where('reporttypeid', $id);
+        if (is_null($report)) {
+            return response()->json("Nema izvestaja ovog tipa");
+        }
+        return response()->json($report->pluck('reportname'));
+    }
+
+    public function reportbycompany(int $id)
+    {
+
+        $report = Report::get()->where('companyid', $id);
+        if (is_null($report)) {
+            return response()->json("Nema izvestaja za ovu kompaniju");
+        }
+        return response()->json($report->pluck('reportname'));
+    }
+
+    // private function companiesReport($id, $request)
+    // {
+
+    //     $company = $request->companies;
+    //         $data = [
+    //             'name' => $company['name'],
+    //             'address' => $company['address'],
+    //             'contact' => $company['contact'],
+	// 	        'email' => $company['email']
+    //         ];
+
+    //         Company::create($data);
+        
+    // }
+    // private function reportstype($id, $request)
+    // {
+    //     $type = $request->reporttypes;
+    //     foreach ($type as $t) {
+    //         $data = [
+    //             'id' => $t['reporttypeid'],
+    //             'type' => $t['type']
+    //         ];
+
+    //         ReportType::create($t);
+    //     }
+    // }
+
+
 }
+
