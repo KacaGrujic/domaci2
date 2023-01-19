@@ -42,12 +42,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('reports', ReportController::class)->only(['update', 'store', 'destroy']);
    // Route::get('/reports', [ReportController::class, 'index']);
     Route::post('/report', [ReportController::class, 'store']);
-    // Route::resource('movies', MovieController::class)->only(['update', 'add', 'destroy']);
-    // Route::delete('/deletemovie/{id}', [MovieController::class, 'destroy']);
-    // Route::put('/update/{id}', [MovieController::class, 'updateById']);
-    // Route::post('/addmovie', [MovieController::class, 'add']);
-    // Route::get('/movieyear/{year}', [MovieController::class, 'thisyear']);
-    // Route::get('/genremovies/{id}', [MovieController::class, 'genremovies']);
+ 
     Route::get('/users', [UserController::class, 'index']); //za prikaz svih korisnika
     Route::get('/companies', [CompanyController::class, 'index']);
 
