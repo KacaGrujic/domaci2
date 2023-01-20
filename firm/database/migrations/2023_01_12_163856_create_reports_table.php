@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id('reportid');
             $table->string('reportname');
             $table->string('analysys');
-            $table->foreignId('companyid');
-            $table->foreignId('userid');
+            $table->foreignId('companyid')->default(0);
             $table->timestamps();
         });
     }

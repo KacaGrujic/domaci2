@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     use HasFactory;
+    // protected $fillable = ['title','slug','excerpt','body'];
     protected $guarded = [];
-
     protected $table='reports';
     protected $primaryKey='reportid';
     protected $fillable= [
@@ -19,19 +19,16 @@ class Report extends Model
         'reporttypeid'
     ];
 
-    public function reporttype()
-    {
-        return $this->belongsTo(ReportType::class);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function company()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Company::class, 'companyid');
     }
 
+    public function reporttype()
+    {
+        return $this->belongsTo(ReportType::class, 'reporttypeid');
+    }
 
 }
+
+

@@ -46,9 +46,20 @@ class ReportTypeController extends Controller
      * @param  \App\Models\ReportType  $reportType
      * @return \Illuminate\Http\Response
      */
+
+
+
+
+
+
     public function show(ReportType $reporttype){
         return new ReportTypeResource($reporttype);
     }
+
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.

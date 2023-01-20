@@ -42,7 +42,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('reports', ReportController::class)->only(['update', 'store', 'destroy']);
    // Route::get('/reports', [ReportController::class, 'index']);
     Route::post('/report', [ReportController::class, 'store']);
- 
+    Route::get('/report/{id}', [ReportController::class, 'getById']);
+
     Route::get('/users', [UserController::class, 'index']); //za prikaz svih korisnika
     Route::get('/companies', [CompanyController::class, 'index']);
 

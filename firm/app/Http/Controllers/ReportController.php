@@ -20,8 +20,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $report = Report::all();
-        return new ReportCollection($report);
+        $reports = Report::all();
+        return ReportResource::collection($reports);
     }
 
     public function store(Request $request)

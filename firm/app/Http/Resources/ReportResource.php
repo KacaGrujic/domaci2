@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ReportTypeResource;
+
 
 class ReportResource extends JsonResource
 {
@@ -20,9 +22,9 @@ class ReportResource extends JsonResource
             'reportid' => $this->resource->reportid,
             'reportname' => $this->resource->reportname,
             'analysys' => $this->resource->analysys,
-            'company' => $this->resource->companyid,
-            'user' => new UserResource($this->resource->user),
-            'reporttype' => $this->resource->reporttypeid
+            'company' => new CompanyResource($this->resource->company),
+            //'user' => $this->resource->userid,
+            'reporttype' => new ReportTypeResource($this->resource->reporttype)
         ];
     }
 }
