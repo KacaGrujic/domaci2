@@ -29,6 +29,7 @@ class Report extends Model
         return $this->belongsTo(ReportType::class, 'reporttypeid');
     }
 
+   
 }
 
 

@@ -130,7 +130,7 @@ class ReportController extends Controller
 
         $report = Report::get()->where('companyid', $id);
         if (is_null($report)) {
-            return response()->json("Nema izvestaja za ovu kompaniju");
+            return response()->json('Nema izvestaja za ovu kompaniju');
         }
         return response()->json($report->pluck('reportname'));
     }

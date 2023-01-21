@@ -44,9 +44,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/report', [ReportController::class, 'store']);
     Route::get('/report/{id}', [ReportController::class, 'getById']);
 
-    Route::get('/users', [UserController::class, 'index']); //za prikaz svih korisnika
+    Route::get('/users', [UserController::class, 'index']); 
     Route::get('/companies', [CompanyController::class, 'index']);
-
+    Route::put('/report/{id}', [ReportController::class, 'updateById']);
+    Route::delete('/report/{id}', [ReportController::class, 'destroy']);
+    Route::get('/reportbytype/{reporttype}', [ReportController::class, 'reportByType']);
+    Route::get('/companyreports/{company}', [ReportController::class, 'reportByCompany']);
 
 
     Route::post('/logout', [AuthController::class, 'logout']);

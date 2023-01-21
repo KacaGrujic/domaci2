@@ -23,7 +23,6 @@ class ReportResource extends JsonResource
             'reportname' => $this->resource->reportname,
             'analysys' => $this->resource->analysys,
             'company' => new CompanyResource($this->resource->company),
-            //'user' => $this->resource->userid,
             'reporttype' => new ReportTypeResource($this->resource->reporttype)
         ];
     }
